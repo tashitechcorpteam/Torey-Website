@@ -242,17 +242,21 @@
 
   function navSolid() {
     const nav = document.getElementById("site-nav");
-    const hero = document.querySelector(".hero");
     if (!nav) return;
+
+    const updateSolid = (y) => {
+      const isScrolled = y > 50;
+      nav.classList.toggle("is-solid", isScrolled);
+    };
+
+    window.addEventListener("scroll", () => updateSolid(window.scrollY), { passive: true });
+    updateSolid(window.scrollY);
 
     ScrollTrigger.create({
       start: 0,
       end: "max",
       onUpdate: (self) => {
-        const pastHero = hero
-          ? self.scroll() > hero.offsetTop + Math.min(hero.offsetHeight * 0.55, window.innerHeight * 2)
-          : self.scroll() > 80;
-        nav.classList.toggle("is-solid", pastHero);
+        updateSolid(self.scroll());
       },
     });
   }
